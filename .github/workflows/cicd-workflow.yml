@@ -13,17 +13,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_HUB_LOGIN }} -p ${{ secrets.DOCKER_HUB_ACCESS_KEY }} 
       - name: Build docker image
-        run: docker build -t aws-docker/server .
+        run: docker build -t andriizaimak/server .
       - name: Publish image to docker hub
-        run: docker push aws-docker/server:latest
+        run: docker push andriizaimak/server:latest
         
   deploy:
     needs: build
     runs-on: [aws-test-server-runner]
     steps:
       - name: Pull image from docker hub
-        run: docker pull aws-docker/server:latest
+        run: docker pull andriizaimak/server:latest
       - name: Delete old container
         run: docker rm -f server-container
       - name: Run docker container
-        run: docker run -d -p 5000:5000 --name server-container aws-docker/server
+        run: docker run -d -p 5000:5000 --name server-container andriizaimak/server
